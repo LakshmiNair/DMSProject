@@ -9,6 +9,12 @@ function create({ userService }) {
         res.json(users);
     }));
 
+    router.post('/info', asyncWrapper(async (req, res) => {
+        const user = req.body;
+        const users = await userService.getUserInfo(user);
+        res.json(users);
+    }));
+
     // TODO: Install middleware to validate the input
     router.post('/', asyncWrapper(async (req, res) => {
         const user = req.body;

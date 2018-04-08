@@ -14,11 +14,31 @@ const { config } = require('../configuration');
 
 const sequelize = new Sequelize(configDB, configUser, configPwd, config);
 
-function create({ User,Contact }) {
+function create({ User,Contact,db }) {
     async function getAll() {
         console.log(User)
         const users = await User.findAll();
         return users.map(user => user.toUserModel());
+    }
+
+    async function getUserInfo(user) {
+        var newuser = user;
+        const query = 'UserInfoGet @username=\'' + newuser.Username + '\' ,@userId=' + newuser.Id;
+        console.log(query);
+        const usercontact = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT});
+        const user1 = User.build(usercontact);
+        const contact = Contact.build(usercontact);
+        //user1.setContacts(contact);
+        //const uc = user1.toUserModel();
+        //.toUserContactModel(user1, contact);
+        //console.log(user1);
+        const uc = {
+            "user": user1,
+            "contact":contact
+
+        }
+        return uc;
+
     }
 
     async function add(usercontact) {
@@ -62,6 +82,7 @@ function create({ User,Contact }) {
     return {
         add,
         getAll,
+        getUserInfo,
     };
 }
 

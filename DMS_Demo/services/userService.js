@@ -11,6 +11,11 @@ function create(userRepository) {
         return users;
     }
 
+    async function getUserInfo(user) {
+        const users = await userRepository.getUserInfo(user);
+        return users;
+    }
+
     async function createUser(usercontact) {
         // TODO: catch possible errors here and rethrow a custom error you defined instead
         await userRepository.add(usercontact);
@@ -19,6 +24,7 @@ function create(userRepository) {
     return {
         createUser,
         getAllUsers,
+        getUserInfo
     };
 }
 
