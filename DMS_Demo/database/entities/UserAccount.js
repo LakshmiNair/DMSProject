@@ -18,6 +18,9 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
+        UserId: {
+            type: Sequelize.INTEGER
+        },
         Username: {
             type: Sequelize.STRING,
             allowNull: false,
@@ -62,7 +65,7 @@ module.exports = (sequelize) => {
     // Map to application model so we don't have tight coupling 
     // throughout the app with the db implemenation
     User.prototype.toUserModel = function toUserModel() {
-        return new userModel(this.Id, this.Username, this.PasswordHash, this.ContactId, this.LoginEnabled, this.LastLogon, this.TimeZone, this.CreatedBy, this.CreatedOn, this.DeletedBy, this.DeletedOn, this.LastModifiedBy, this.LastModifiedOn);
+        return new userModel(this.Id,this.UserId, this.Username, this.PasswordHash, this.ContactId, this.LoginEnabled, this.LastLogon, this.TimeZone, this.CreatedBy, this.CreatedOn, this.DeletedBy, this.DeletedOn, this.LastModifiedBy, this.LastModifiedOn);
     };
     User.prototype.toUserContactModel = function toUserContactModel() {
         return new usercontactModel(User,Contact);

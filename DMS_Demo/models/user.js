@@ -1,8 +1,9 @@
 ﻿class User {
 
 
-    constructor(id, username, passwordhash, contactid,loginenabled,lastlogon,timezone,createdby,createdon,deletedby,deletedon,lastmodifiedby,lastmodifiedon) {
+    constructor(id,UserId, username, passwordhash, contactid,loginenabled,lastlogon,timezone,createdby,createdon,deletedby,deletedon,lastmodifiedby,lastmodifiedon) {
         this.id = id;
+        this.UserId=UserId;
         this.username = username;
         this.passwordhash = passwordhash;
         this.contactid = contactid;

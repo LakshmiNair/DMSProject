@@ -23,7 +23,12 @@ function create({ User,Contact,db }) {
 
     async function getUserInfo(user) {
         var newuser = user;
-        const query = 'UserInfoGet @username=\'' + newuser.Username + '\' ,@userId=' + newuser.Id;
+        if(!newuser.Username)
+            newuser.Username=null;
+        if(!newuser.Id)
+            newuser.Id=null;
+        //const query = 'UserInfoGet @username=\'' + newuser.Username + '\' ,@userId=' + newuser.Id;
+        const query = 'UserInfoGet @username=' + newuser.Username +  ',@userId=' + newuser.Id;
         console.log(query);
         const usercontact = await sequelize.query(query, { type: sequelize.QueryTypes.SELECT});
         const user1 = User.build(usercontact);
@@ -47,32 +52,42 @@ function create({ User,Contact,db }) {
         const password = await bcrypt.hash(usercontact.user.PasswordHash, 10);
 
        const t = await sequelize.transaction();
-       try {
+        try {
 
            
-           //save user
-           var newuser = usercontact.user;
-           var newcontact = usercontact.contact;
+            //save user
+            var newuser = usercontact.user;
+            var newcontact = usercontact.contact;
           
-           newuser.PasswordHash = password;
-           const query = 'UserAdd @username=\'' + newuser.Username + '\',@passwordHash=\'' + newuser.PasswordHash + '\',@hasLoginEnabled=\'' + newuser.LoginEnabled + '\', @timeZone=\'' + newuser.TimeZone + '\',@createdBy=' + newuser.CreatedBy + ',@salutation=\'' + newcontact.Salutation + '\',' +
-               '@firstName=\'' + newcontact.FirstName + '\', @lastName =\'' + newcontact.LastName + '\',@middleInitials=\'' + newcontact.MiddleInitials + '\', @suffix = \'' + newcontact.Suffix + '\',@birthDate=' + newcontact.BirthDate + ', @addressLine1 = \'' + newcontact.AddressLine1 + '\',@addressLine2=\'' + newcontact.AddressLine2 + '\', @addressLine3 = \'' + newcontact.AddressLine3 + '\',@city=\'' + newcontact.City + '\', @state = \'' + newcontact.State + '\',@postalCode=\'' + newcontact.PostalCode + '\', @dayPhone = \'' + newcontact.DayPhone + '\',@eveningPhone=\'' + newcontact.EveningPhone + '\', @email = \'' + newcontact.Email + '\',@mobilePhone=\'' + newcontact.MobilePhone + '\', @company = \'' + newcontact.Company + '\',@fax=\'' + newcontact.Fax + '\', @country =\'' + newcontact.Country + '\',@result=0';
-           const q = await sequelize.query(query, { transaction: t });
+            newuser.PasswordHash = password;
+            const query = 'UserAdd @username=\'' + newuser.Username + '\',@passwordHash=\'' + newuser.PasswordHash + '\',@hasLoginEnabled=\'' + newuser.LoginEnabled + '\', @timeZone=\'' + newuser.TimeZone + '\',@createdBy=' + newuser.CreatedBy + ',@salutation=\'' + newcontact.Salutation + '\',' +
+                '@firstName=\'' + newcontact.FirstName + '\', @lastName =\'' + newcontact.LastName + '\',@middleInitials=\'' + newcontact.MiddleInitials + '\', @suffix = \'' + newcontact.Suffix + '\',@birthDate=' + newcontact.BirthDate + ', @addressLine1 = \'' + newcontact.AddressLine1 + '\',@addressLine2=\'' + newcontact.AddressLine2 + '\', @addressLine3 = \'' + newcontact.AddressLine3 + '\',@city=\'' + newcontact.City + '\', @state = \'' + newcontact.State + '\',@postalCode=\'' + newcontact.PostalCode + '\', @dayPhone = \'' + newcontact.DayPhone + '\',@eveningPhone=\'' + newcontact.EveningPhone + '\', @email = \'' + newcontact.Email + '\',@mobilePhone=\'' + newcontact.MobilePhone + '\', @company = \'' + newcontact.Company + '\',@fax=\'' + newcontact.Fax + '\', @country =\'' + newcontact.Country + '\',@result=0';
+            
+            //const query = 'UserAdd @username=' + newuser.Username + ',@passwordHash=' + newuser.PasswordHash + ',@hasLoginEnabled=' 
+            //    + newuser.LoginEnabled + ', @timeZone=' + newuser.TimeZone + ',@createdBy=' + newuser.CreatedBy + ',@salutation=' + newcontact.Salutation + ',' 
+            //    + '@firstName=' + newcontact.FirstName + ', @lastName =' + newcontact.LastName + ',@middleInitials=' + newcontact.MiddleInitials + ', @suffix = ' 
+            //    + newcontact.Suffix + ',@birthDate=' + newcontact.BirthDate + ', @addressLine1 = ' + newcontact.AddressLine1 + ',@addressLine2=' 
+            //   + newcontact.AddressLine2 + ', @addressLine3 = ' + newcontact.AddressLine3 + ',@city=' + newcontact.City + ', @state = ' 
+            //   + newcontact.State + ',@postalCode=' + newcontact.PostalCode + ', @dayPhone = ' + newcontact.DayPhone + ',@eveningPhone=' + newcontact.EveningPhone
+            //   + ', @email = ' + newcontact.Email + ',@mobilePhone=' + newcontact.MobilePhone + ', @company = ' + newcontact.Company + ',@fax=' 
+            //   + newcontact.Fax + ', @country =' + newcontact.Country + ',@result=0';
+            
+            const q = await sequelize.query(query, { transaction: t });
            
-           console.log(q);
+            console.log(q);
            
-           await t.commit();
-           return ("Inserted");
+            await t.commit();
+            return ("Inserted");
 
-           //return result;
-       }
-       catch (error) {
-           // Rollback transaction if any errors were encountered
-           console.log(error);
-           await t.rollback();
-           console.log(t);
-           return (error);
-       }
+            //return result;
+        }
+        catch (error) {
+            // Rollback transaction if any errors were encountered
+            console.log(error);
+            await t.rollback();
+            console.log(t);
+            return (error);
+        }
     }
 
     //async function update(user) {
@@ -83,7 +98,7 @@ function create({ User,Contact,db }) {
         add,
         getAll,
         getUserInfo,
-    };
+        };
 }
 
 module.exports.create = create;
