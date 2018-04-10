@@ -11,8 +11,10 @@ db.sequelize = sequelize;
 const Product = require('./entities/Product')(sequelize);
 const User = require('./entities/UserAccount')(sequelize);
 const Contact = require('./entities/Contact')(sequelize);
+const Role = require('./entities/Role')(sequelize);
 db.User = require('./entities/UserAccount')(sequelize);
 db.Contact = require('./entities/Contact')(sequelize);
+db.Role = require('./entities/Role')(sequelize);
 //sequelize.sync();
 User.belongsTo(db.Contact, { foreignKey: 'ContactId', sourceKey: 'Id' });
 //db.User.belongsTo(db.Contact, { foreignKey: 'ContactId', sourceKey: 'Id' });
@@ -24,7 +26,8 @@ module.exports = {
     Product,
     User,
     Contact,
+    Role,
     db,
     //sync: sequelize.sync.bind(this),
-    close: () => sequelize.connectionManager.close(),
-};
+        close: () => sequelize.connectionManager.close(),
+        };

@@ -57,9 +57,12 @@ function create({ User,Contact,db }) {
            
             //save user
             var newuser = usercontact.user;
-            var newcontact = usercontact.contact;
-          
+            var newcontact = usercontact.contact;          
             newuser.PasswordHash = password;
+
+            //if(!newuser.LoginEnabled )
+            //    newuser.LoginEnabled =null;
+
             const query = 'UserAdd @username=\'' + newuser.Username + '\',@passwordHash=\'' + newuser.PasswordHash + '\',@hasLoginEnabled=\'' + newuser.LoginEnabled + '\', @timeZone=\'' + newuser.TimeZone + '\',@createdBy=' + newuser.CreatedBy + ',@salutation=\'' + newcontact.Salutation + '\',' +
                 '@firstName=\'' + newcontact.FirstName + '\', @lastName =\'' + newcontact.LastName + '\',@middleInitials=\'' + newcontact.MiddleInitials + '\', @suffix = \'' + newcontact.Suffix + '\',@birthDate=' + newcontact.BirthDate + ', @addressLine1 = \'' + newcontact.AddressLine1 + '\',@addressLine2=\'' + newcontact.AddressLine2 + '\', @addressLine3 = \'' + newcontact.AddressLine3 + '\',@city=\'' + newcontact.City + '\', @state = \'' + newcontact.State + '\',@postalCode=\'' + newcontact.PostalCode + '\', @dayPhone = \'' + newcontact.DayPhone + '\',@eveningPhone=\'' + newcontact.EveningPhone + '\', @email = \'' + newcontact.Email + '\',@mobilePhone=\'' + newcontact.MobilePhone + '\', @company = \'' + newcontact.Company + '\',@fax=\'' + newcontact.Fax + '\', @country =\'' + newcontact.Country + '\',@result=0';
             
